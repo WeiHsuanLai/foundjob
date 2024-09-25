@@ -9,6 +9,12 @@
 
 // 內建方法介紹 pronpt() 與 alert()
 
-fruit = prompt("你最喜歡的水果是什麼?")
+// fruit = prompt("你最喜歡的水果是什麼?")
 // console.log(fruit);
-alert(fruit)
+// alert(fruit)
+
+// 服務費計算機
+let food = prompt('這餐花費多少?')
+let tipPercentage = prompt("服務費費有幾 %") / 100
+let tipAmount = food * tipPercentage 
+alert(tipAmount)
