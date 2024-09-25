@@ -14,7 +14,9 @@
 // alert(fruit)
 
 // 服務費計算機
-let food = prompt('這餐花費多少?')
-let tipPercentage = prompt("服務費費有幾 %") / 100
+let food = parseInt(prompt('這餐花費多少?'))
+let tipPercentage = parseInt(prompt("服務費費有幾 %"))/100
 let tipAmount = food * tipPercentage 
-alert(tipAmount)
+let total = food + tipAmount
+console.log("服務費金額" + tipAmount);
+console.log("總金額" + total);
