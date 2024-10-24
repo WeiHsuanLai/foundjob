@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .text-red {
+      color: red;
+    }
+    .text-center {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 綁定圖片 img  冒號:為v-bind 的簡寫-->
+     <p>第一張圖</p>
+     <img v-bind:src="img" :height = num >
+     <p>第二張圖</p>
+    <img :src="img" :height = num >
+    <p>綁定網址</p>
+    <a :href="link.url">{{link.text}}</a>
+    <p>第一種綁定 style</p>
+    <h1 :style="textStyle">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h1>
+    <p>第二種綁定 style</p>
+    <h1 :style="
+    { color:textColor,
+      textAlign,
+      fontStyle:num === 100 ? 'italic' : 'normal'
+    }">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h1>
+    <p>第一種綁定class:用陣列去綁定</p>
+    <h1 :class="textClassArray">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h1>
+    <p>第一種綁定class:用物件去綁定</p>
+    <h1 :class="textClassObj">Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h1>
+  </div>
+  <!-- vue.js -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.27/vue.global.min.js' integrity='sha512-jDpwxJN+g4BhXLdba5Z1rn2MpR9L5Wp3WVf2dJt5A0mkPHnHLZHZerpyX4JC9bM0pkCL7RmAR8FwOm02h7RKFg==' crossorigin='anonymous'></script>
+  <script>
+    Vue.createApp({
+      data() {
+        return {
+          num: 100,
+          num2:10,
+          img: 'https://github.com/vuejs.png',
+          link: {
+            url: 'https://x.com',
+            text: 'Twitter'
+          },
+          // 綁定 style 一定要有大括號{}和物件 但這樣寫會有效能的問題
+          textStyle: {
+            color: 'lightblue',
+            textAlign: 'center',
+            'background': 'gray'
+          },
+          textColor: 'pink',
+          textAlign: 'right',
+          textClassArray: ['text-red', 'text-center'],
+          // 用物件綁定時，只有 true 的才會被套用
+          textClassObj: {
+            'text-red': true,
+            'text-center': false
+          }
+        }
+      }
+    }).mount('#app')
+  </script>
+</body>
+
+</html>
