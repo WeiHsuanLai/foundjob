@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <input type="button" :value="num" @click="num++">
+    <br>
+    姓: <input type="text" v-model="lastName">
+    <br>
+    名: <input type="text" v-model="firstName">
+    <br>
+    全名(computed 只計算框內變更的): {{ fullName }} 
+    <br>
+    全名(methods 只要重新渲染就要再計算一次): {{ fullNameMethod() }} 
+    <br>
+    全名(methods 只要重新渲染就要再計算一次): {{ lastName + firstName }}
+  </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.27/vue.global.min.js' integrity='sha512-jDpwxJN+g4BhXLdba5Z1rn2MpR9L5Wp3WVf2dJt5A0mkPHnHLZHZerpyX4JC9bM0pkCL7RmAR8FwOm02h7RKFg==' crossorigin='anonymous'></script>
+  <script>
+    Vue.createApp({
+      data() {
+        return {
+          firstName: '',
+          lastName: '',
+          num: 0
+        }
+      },
+      // 用現有資料產生新的動態資料，只會在資料改變時動作
+      computed: {
+        fullName() {
+          console.log('computed 更新')
+          return this.lastName + this.firstName
+        }
+      },
+      // function
+      methods: {
+        fullNameMethod() {
+          console.log('methods 更新')
+          return this.lastName + this.firstName
+        }
+      },
+      // 監聽
+      watch: {
+        firstName(newValue, oldValue) {
+          console.log(`firstName: ${oldValue} --> ${newValue}`)
+        },
+        lastName: {
+          handler(newValue, oldValue) {
+            console.log(`lastName: ${oldValue} --> ${newValue}`)
+          },
+          // 設定 once 代表只偵測一次，這個只有 vue3.4 後才有的功能
+          once: true,
+          // deep 設定 true 可以深層監聽，但會消耗更多資源
+          deep: true
+        }
+      }
+    }).mount('#app')
+  </script>
+  <script src="標題.js"></script>
+</body>
+
+</html>
