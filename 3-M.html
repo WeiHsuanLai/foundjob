@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <!-- v-model 可以在組件上使用以實現雙向綁定 -->
+    <input type="text" v-model="form.text">
+    <p>{{ form.text }}</p>
+    <!-- v-model.number 綁定使用者輸入的值，轉成數字 -->
+    <!-- v-model.trim 綁定使用者輸入的值，自動移除前後空白，還有前面數字要是是0就會移除0，然後會直接把空白拿掉-->
+    <!-- .lazy 在 change 時才更新，也就是按 enter 完之後，-->
+    <input type="text" v-model.number.trim.lazy="form.num">
+    <br>
+    <!-- 如果把 type 改成 number 就無法打一般的文字，然後會出現可以選取增減的按鈕 -->
+    <input type="number" v-model.number.trim.lazy="form.num2">
+    <hr>
+    <!-- 
+      radio 和 checkbox 用 v-model 分組
+      v-model => 使用者輸入的值
+      value   => 欄位本身的值
+      value 沒有用 v-bind 的字料都是文字
+    -->
+    <p>這行 radio 型態是文字</p>
+    <input type="radio" v-model="form.radio" value="1">
+    <input type="radio" v-model="form.radio" value="2">
+    <input type="radio" v-model="form.radio" value="3">
+    <br>
+    <p>這行 radio 型態是數字</p>
+    <!-- 只要加了冒號就是 js 的範圍，直接打會變成變數，如果要打文字記得加上'' -->
+     <!-- 所有 v 開頭的指令都是 js 的範圍 -->
+    <input type="radio" v-model="form.radio2" :value="1">
+    <input type="radio" v-model="form.radio2" :value="2">
+    <input type="radio" v-model="form.radio2" :value="3">
+    <br>
+    <template v-for="(option,index) in checkOptions">
+        <label :for="'check-'+ index">{{option.label}}</label>
+        <input type="checkbox" :id=" 'check-' +( index + 1)" :value="option.value" v-model="form.check">
+      </template>
+      <p>{{ form.check }}</p>
+      <select v-model="form.select">
+        <option v-for="option in selectOption" :value="option.value">{{ option.label }}</option>
+      </select>
+    </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.27/vue.global.min.js' integrity='sha512-jDpwxJN+g4BhXLdba5Z1rn2MpR9L5Wp3WVf2dJt5A0mkPHnHLZHZerpyX4JC9bM0pkCL7RmAR8FwOm02h7RKFg==' crossorigin='anonymous'></script>
+  <script>
+    Vue.createApp({
+      data() {
+        return {
+          form: {
+            text: '預設會輸入的文字',
+            num: 1,
+            num2: 2,
+            radio: undefined,
+            radio2: undefined,
+            check: ['50'],
+            select: 'a',
+          },
+          checkOptions: [
+            { value: 'KBK', label: '可不可' },
+            { value: '50', label: '50嵐' },
+            { value: 'combuy', label: 'Come Buy' }
+          ],
+          selectOption: [
+            { value: 'v', label: 'Vue' },
+            { value: 'a', label: 'Angular' },
+            { value: 'r', label: 'React' }
+          ]
+        }
+      },
+    }).mount('#app')
+  </script>
+  <script src="標題.js"></script>
+</body>
+
+</html>
