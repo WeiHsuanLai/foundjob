@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 點擊事件 v-on:click 簡寫為 @ -->
+    <!-- <input type="button" value="notify" v-on:click="notify"> -->
+    <input type="button" value="notify" @click="notify">
+    <!-- @click="notify2('456')" 這樣寫就沒辦法取得事件的物件 -->
+    <input type="button" value="notify2('456')" @click="notify2('456')">
+    <input type="button" value="notify3('789')" @click="notify3('789', $event)">
+    <hr>
+    <input type="button" value="event => notify(event)" @click="event => notify(event)">
+    <input type="button" value="=> notify2('456')" @click="() => notify2('456')">
+    <input type="button" value="event => notify3('789',event) " @click="event => notify3('789',event)">
+    <!-- .once 只觸發一次  -->
+     <hr>
+    <input type="button" value="notify (once)" @click.once="notify">
+    <!-- .left .right .middle 指定滑鼠按鍵 -->
+    <input type="button" value="notify (right once)" @click.right.once="notify">
+    <!-- 
+      .prevent -> event.prevent()
+      .stop -> event.stopPropagation()
+     -->
+    <hr>
+     <a href="https://x.com" @click.prevent="notify">點擊後執行事件不會跳去推特</a>
+     <br>
+     <a href="https://x.com" @click.stopPropagation="notify">點擊後先執行指令後跳去推特</a>
+     <br>
+     <a href="https://x.com" @click.stop="notify">點擊後先執行指令後跳去推特</a>
+
+     <hr>
+     <input type="text" v-model="input" @keydown.enter="add">
+     <ul>
+       <li v-for="item in list">{{ item }}</li>
+     </ul>
+     <button @keydown.a.exact="notify2">點擊後按a會觸發 notify2 事件</button>
+  </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.27/vue.global.min.js' integrity='sha512-jDpwxJN+g4BhXLdba5Z1rn2MpR9L5Wp3WVf2dJt5A0mkPHnHLZHZerpyX4JC9bM0pkCL7RmAR8FwOm02h7RKFg==' crossorigin='anonymous'></script>
+  <script>
+    Vue.createApp({
+      data() {
+        return {
+          input: '',
+          list: []
+        }
+      },
+      methods: {
+        // 這邊的 event 是預設的物件
+        notify(event) {
+          console.log(event);
+          alert('123')
+        },
+        notify2(text) {
+          console.log(text);
+          alert(text)
+        },
+        notify3(text, event) {
+          console.log(event);
+          alert(text)
+        },
+        add() {
+          if (this.input.length === 0) return
+          this.list.push(this.input)
+          this.notify2(this.input)
+          this.input = ''
+        }
+      },
+    }).mount('#app')
+  </script>
+  <script src="標題.js"></script>
+</body>
+
+</html>
