@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 用 form 包起來可以使用 prevent 不要執行預設跳頁動作，執行我要的 function -->
+    <form @submit.prevent="addItem">
+      <input type="text" v-model="input" :style="{ border: inputBorder }">
+      <input type="submit" value="新增">
+    </form>
+    <hr>
+    <input type="text" v-model="search">
+    <hr>
+    <ul>
+      <li v-for="item in filterItems">
+        <!-- <input type="checkbox" @input="item.done = !item.done" :checked="item.done"> -->
+        <!-- 以下這行 input 是完成狀態的 checkbox -->
+        <input type="checkbox" v-model="item.done">
+        <del v-if="item.done">{{ item.text }}</del>
+        <span v-else> {{ item.text }}</span>
+        <input type="button" value="x" @click="delItem(item.id)">
+      </li>
+    </ul>
+  </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.27/vue.global.min.js' integrity='sha512-jDpwxJN+g4BhXLdba5Z1rn2MpR9L5Wp3WVf2dJt5A0mkPHnHLZHZerpyX4JC9bM0pkCL7RmAR8FwOm02h7RKFg==' crossorigin='anonymous'></script>
+  <script>
+    Vue.createApp({
+      data() {
+        return {
+          items: [],
+          input: '',
+          search: '',
+          id: 1
+        }
+      },
+      computed:{
+        inputBorder(){
+          if (this.input.length === 0) return '5px solid black'
+          else if (this.input.length < 2) return '5px solid red'
+          else return '5px solid green'
+        },
+        filterItems(){
+          // filter() 方法會建立一個經指定之函式運算後，由原陣列中通過該函式檢驗之元素所構成的新陣列。
+          return this.items.filter(item =>{
+            // includes() 方法會判斷陣列是否包含特定的元素，並以此來回傳 true 或 false。
+            //  這邊的 this.search 因為是箭頭涵式所以是指向 data()，如果用一般的 function 就會變成 function 裡的 this
+            return item.text.includes(this.search)
+          })
+        }
+      },
+      methods:{
+        addItem(){
+          if (this.input.length < 2) return
+          this.items.push({ done: false, text: this.input, id: this.id++ })
+          this.input = ''
+        },
+        delItem(id){
+          // findIndex() 方法將依據提供的測試函式，尋找陣列中符合的元素，並返回其 index（索引）。如果沒有符合的對象，將返回 -1 。
+          const i = this.items.findIndex(item => {
+            return item.id === id
+          })
+          this.items.splice(i,1)
+        }
+      },
+      watch:{
+        // 這段代碼使用了 Vue 的 watch 功能來監視 items 資料的變化。
+        // 當 items 發生變化時，會執行以下操作：
+        // 使用 JSON.stringify() 方法將 this.items 轉換為字符串。
+        // 將轉換後的字符串存儲到本地存儲中，鍵名為 vueTodo。
+        // JSON.stringify() 方法将一个 JavaScript 对象或值转换为 JSON 字符串，
+        // 如果指定了一个 replacer 函数，则可以选择性地替换值，或者指定的 replacer 是数组，
+        // 则可选择性地仅包含数组指定的属性。
+        items: {
+          handler(newValue, oldValue) {
+            // 設定 deep true 的時候，new 和 old 都一樣
+            console.log(newValue, oldValue)
+            localStorage.vueTodo = JSON.stringify(newValue)
+          },
+          // deep: true 陣列或物件的深層監聽
+          deep: true
+        }
+      },
+      mounted() {
+        // 如果你的 localStorage 沒有 vueTodo 會得到 undefined，
+        // undefined 沒辦法 JSON.parse， 所以要加上 '[]' 作為預設值。
+        const items = JSON.parse(localStorage.vueTodo || '[]')
+        this.items = items
+        if (this.items.length > 0) {
+          this.id = this.items[this.items.length - 1].id + 1
+        }
+      }
+    }).mount('#app')
+  </script>
+  <script src="標題.js"></script>
+</body>
+
+</html>
