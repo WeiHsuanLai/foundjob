@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <Plus></Plus>
+  </div>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.27/vue.global.min.js' integrity='sha512-jDpwxJN+g4BhXLdba5Z1rn2MpR9L5Wp3WVf2dJt5A0mkPHnHLZHZerpyX4JC9bM0pkCL7RmAR8FwOm02h7RKFg==' crossorigin='anonymous'>
+  </script>
+
+  <script type="text/x-template" id="plus">
+    <input type="button" :value="num" @click="change">
+  </script>
+  <script>
+    const { ref,provide,inject,computed } = Vue
+    Vue.createApp({
+      setup() {
+        const num = ref(100)
+        // 提供一個名為 num 的資料，值是 num
+        provide('num',num)
+      }
+
+      // data () {
+      //   return {
+      //     num: 100
+      //   }
+      // },
+      // provide () {
+      //   return {
+      //     num: computed({
+      //       get: () => {
+      //         return this.num
+      //       },
+      //       set: (value) => {
+      //         this.num = value
+      //       }
+      //     })
+      //   }
+      // }
+    })
+    // 組件名稱
+    .component('Plus', {
+      template: '#plus',
+      setup(){
+        // 注入一個名為 num 的資料
+        const num = inject('num')
+        const change = () =>{
+          num.value += 100
+        }
+        return { num, change }
+      }
+
+      // inject: ['num'],
+      // methods: {
+      //   change () {
+      //     this.num += 100
+      //   }
+      // },
+    }).mount('#app')
+  </script>
+  <script src="標題.js"></script>
+</body>
+
+</html>
