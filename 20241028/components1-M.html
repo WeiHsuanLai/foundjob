@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <Counter></Counter>
+    <Counter></Counter>
+    <Counter></Counter>
+    <Counter></Counter>
+    <Counter></Counter>
+    <Counter></Counter>
+  </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.27/vue.global.min.js' integrity='sha512-jDpwxJN+g4BhXLdba5Z1rn2MpR9L5Wp3WVf2dJt5A0mkPHnHLZHZerpyX4JC9bM0pkCL7RmAR8FwOm02h7RKFg==' crossorigin='anonymous'>
+  </script>
+  <!-- 
+  在宣告 x-template 時，可使用 <script> 標籤來封裝我們的 HTML 模板，
+  並在標籤帶上 text/x-template 的類型，然後通過一個 id 將模板進行引用。
+  這個不能寫 src 而且 type 一定要是 text/x-template
+  id 可以自己取代表這個元件的 html
+  -->
+  <script type="text/x-template" id="counter">
+    <input type="button" :value="num" @click="num++">
+  </script>
+  <script>
+    const { ref } = Vue
+    // const app = Vue.createApp({})
+    // app.component({})
+    // app.mount('#app')
+    
+    Vue.createApp({})
+    .component('Counter', {
+      // 第一個參數通常是大寫放元件的名稱來避免跟 HMTL 標籤名稱衝突
+      // 可以直接打 HTML 或指定 id
+      // template: '<input type="button" :value="num" @click="num++">'
+      template: '#counter',
+      // data () {
+        //   return {
+        //     num: 0
+        //   }
+        // }
+      setup () {
+        const num = ref(0)
+        return { num }
+      }
+    })
+    .mount('#app')
+  </script>
+  <script src="標題.js"></script>
+</body>
+
+</html>
